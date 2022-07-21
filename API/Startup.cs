@@ -43,9 +43,11 @@ namespace API
 
             //add CORS POLICY
             services.AddCors(opt=>{
-                opt.AddPolicy("CorsPolicy",policy=>{
+                opt.AddPolicy("CorsPolicy",policy=>
+                {
                     policy.AllowAnyMethod()
-                    .AllowAnyHeader().WithOrigins("http://localhost:3002");
+                    .AllowAnyHeader().
+                    WithOrigins("http://localhost:3000");
                 });
             });
         }
