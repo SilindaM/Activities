@@ -30,7 +30,8 @@ namespace Application.Activities
                         await Task.Delay(100,cancellationToken);
                     }
                 }
-                catch(Exception ex){
+                catch (Exception ex) when (ex is TaskCanceledException)
+                {
 
                 }
                 return await _context.Activities.ToListAsync();
