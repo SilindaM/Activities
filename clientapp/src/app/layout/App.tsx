@@ -38,6 +38,15 @@ function App() {
     setEditMode(false);
   }
 
+  function handleCreateOrEditActivity(activity:Activity){
+    //check if the activity exists by checking the id
+    activity.id?
+     setActivities([...activities.filter(x=>x.id!==activity.id),activity])
+    //if there is no id we create
+    :setActivities([...activities,activity]);
+    setEditMode(false);
+    setSelectedActivity(activity)
+  }
   return (
     < >
       <Navbar openForm={handleFormOpen}/>
@@ -51,6 +60,7 @@ function App() {
            editMode={editMode}
            openForm={handleFormOpen}
            closeForm={handleFormClose}
+           createOrEdit={handleCreateOrEditActivity}
            />
         </Container>
     </>
