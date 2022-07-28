@@ -29,7 +29,6 @@ namespace API
        public Startup(IConfiguration configuration)
        {
             this._configuration = configuration;
-        
        }
 
         public IConfiguration Configuration { get; }
