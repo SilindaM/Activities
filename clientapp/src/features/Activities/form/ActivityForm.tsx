@@ -4,14 +4,14 @@ import { Button, Form, Segment } from "semantic-ui-react";
 import { Activity } from "../../../Models/activity";
 
 interface Props{
-    activity: Activity | undefined;
+    activity: Activity | undefined ;
     closeForm: ()=>void;
     createOrEdit:(activity:Activity)=>void;
 }
 
-export default function ActivityForm({activity:SelectedActivity,closeForm,createOrEdit}:Props){
+export default function ActivityForm({activity:selectedActivity,closeForm,createOrEdit}:Props){
 
-    const initialState= SelectedActivity ?? {
+    const initialState= selectedActivity || {
         id: '',
         title: '',
         category: '',
@@ -19,7 +19,7 @@ export default function ActivityForm({activity:SelectedActivity,closeForm,create
         date: '',
         city: '',
         venue:''
-    }
+    } 
     const [activity,setActivity]=useState(initialState);
 
     function handleSubmit(){
