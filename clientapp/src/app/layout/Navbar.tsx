@@ -6,7 +6,7 @@ interface Props{
     openForm: () => void;
 }
 
-export default function NavBar({openForm}:Props){
+export default function NavBar(){
     const {activityStore} = useStore();
     return(
         <Menu inverted fixed='top'>
