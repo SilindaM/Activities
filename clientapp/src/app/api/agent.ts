@@ -1,5 +1,6 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { resolve } from "path";
+import { toast } from "react-toastify";
 import { Activity } from "../../Models/activity";
 
 
@@ -12,14 +13,26 @@ const sleep=(delay:number)=>{
 axios.defaults.baseURL='http://localhost:5000';
 
 axios.interceptors.response.use(async response=>{
-    try {
+   
         await sleep(1000);
         return response;
-    } catch (error) {
-        console.log(error);
-        return await Promise.reject(error);
-    }
-
+    },(error:AxiosError)=>{
+        const {data,status}=error.response!;
+        switch(status){
+            case 400:
+                toast.error('Bad Request');
+                break;
+            case 401:
+                 toast.error('unauthorised');
+                 break;
+            case 404:
+                 toast.error('not found');
+                 break;
+            case 500:
+                 toast.error('server error');
+                 break;
+        }
+        return Promise.reject(error);
     })
 
 const responseBody=<T>(response:AxiosResponse<T>)=>response.data;
