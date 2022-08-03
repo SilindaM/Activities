@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import '../src/app/layout/styles.css';
+import './app/layout/styles.css';
 import 'react-calendar/dist/Calendar.css'
 import App from '../src/app/layout/App';
 import reportWebVitals from './reportWebVitals';
