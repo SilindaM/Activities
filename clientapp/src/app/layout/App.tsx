@@ -7,6 +7,8 @@ import { Route, Router, useLocation } from 'react-router-dom';
 import HomePage from '../../features/home/HomePage';
 import ActivityForm from '../../features/Activities/form/ActivityForm';
 import ActivityDetails from '../../features/Activities/details/ActivityDetails';
+import TestError from '../../features/error/TestError';
+import { ToastContainer } from 'react-toastify';
 
 
 function App() {
@@ -15,6 +17,7 @@ function App() {
  
   return (
     < >
+    <ToastContainer position='bottom-right' hideProgressBar/>
     <Route exact  path='/' component={HomePage}/>
     
     <Route
@@ -29,8 +32,7 @@ function App() {
             <Route exact path='/activities' component={ActivityDashboard } />
             <Route path='/activities/:id' component={ActivityDetails } />
             <Route key={location.key} path={['/createActivity','/manage/:id']} component={ActivityForm } />
-            
-
+            <Route path='/errors' component={TestError}/>
           </Container>
         </>
       )}
