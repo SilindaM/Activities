@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { resolve } from "path";
 import { toast } from "react-toastify";
 import { Activity } from "../../Models/activity";
-
+import { history } from "../..";
 
 const sleep=(delay:number)=>{
     return new Promise ((resolve)=>{
@@ -23,10 +23,11 @@ axios.interceptors.response.use(async response=>{
                 toast.error('Bad Request');
                 break;
             case 401:
+            
                  toast.error('unauthorised');
                  break;
             case 404:
-                 toast.error('not found');
+                 history.push('not found');
                  break;
             case 500:
                  toast.error('server error');
