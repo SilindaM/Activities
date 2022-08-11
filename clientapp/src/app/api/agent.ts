@@ -1,14 +1,16 @@
 import { toast } from "react-toastify";
+import { resolve } from "path";
 import { Activity } from "../../Models/activity";
 import { history } from "../..";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { store } from "../stores/store";
+import { config } from "process";
 
-const sleep=(delay:number)=>{
-    return new Promise ((resolve)=>{
-        setTimeout(resolve,delay)
+const sleep = (delay: number) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, delay)
     })
-}
+ }
 axios.defaults.baseURL='http://localhost:5000';
 
 axios.interceptors.response.use(async response=>{
@@ -16,9 +18,16 @@ axios.interceptors.response.use(async response=>{
         await sleep(1000);
         return response;
     },(error:AxiosError)=>{
-        const {data,status}:{data:any;status:number}=error.response!;
+        const {data,status,config}:{data:any;status:number;config:any}=error.response!;
+        console.log(error.response);
         switch(status){
             case 400:
+                if(typeof data==='string'){
+                    toast.error(data);
+                }
+                if(config.method==='get' && data.errors.hasOwnProperty('id')){
+                    history.push('/not-found');
+                }
                 if(data.errors){
                     const modalStateErrors=[];
                     for(const key in data.errors){

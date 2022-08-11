@@ -39,7 +39,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
            
-            services.AddControllers().AddFluentValidation(config=>{
+            services.AddControllers()
+            .AddFluentValidation(config=>{
                 config.RegisterValidatorsFromAssemblyContaining<Create>();
             });
             services.AddApplicationServices(_configuration);

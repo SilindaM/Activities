@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Application.Core;
 
 namespace API.Middleware
@@ -12,7 +8,12 @@ namespace API.Middleware
     {
         private readonly RequestDelegate _next;
         public ILogger<ExceptionMiddleware> _logger { get; }
-        public IHostEnvironment _env { get; }
+        public ExceptionMiddleware(IHostEnvironment _env) 
+        {
+            this._env = _env;
+   
+        }
+                public IHostEnvironment _env { get; }
         public ExceptionMiddleware(RequestDelegate next,ILogger<ExceptionMiddleware> logger,IHostEnvironment env)
         {
             this._env = env;
@@ -22,7 +23,8 @@ namespace API.Middleware
         public async Task InvokeAsync(HttpContext httpContext){
             try{
                     await _next(httpContext);
-            }catch(Exception ex){
+            }
+            catch(Exception ex){
                 _logger.LogError(ex,ex.Message);
                 httpContext.Response.ContentType="application/json";
                 httpContext.Response.StatusCode=(int)HttpStatusCode.InternalServerError;
@@ -34,6 +36,7 @@ namespace API.Middleware
                 var options=new JsonSerializerOptions{PropertyNamingPolicy=JsonNamingPolicy.CamelCase};
 
                 var json=JsonSerializer.Serialize(response,options);
+               
                 await httpContext.Response.WriteAsync(json);
             }
         }
