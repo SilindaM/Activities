@@ -7,11 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Services
 {
     public class TokenService
     {
+        private readonly IConfiguration configuration;
+
+        public TokenService(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public string CreateToken(AppUser user)
         {
             var claims=new List<Claim>
@@ -20,7 +28,7 @@ namespace API.Services
                 new Claim(ClaimTypes.NameIdentifier,user.Id),
                 new Claim(ClaimTypes.Email,user.Email)
             };
-            var key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+            var key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["TokenKey"]));
             var creds=new SigningCredentials(key,SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor=new SecurityTokenDescriptor{
