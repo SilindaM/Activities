@@ -14,6 +14,7 @@ import ServerError from '../../features/error/ServerError';
 import LoginForm from '../../features/users/LoginForm';
 import { useStore } from '../stores/store';
 import LoadingComponent from './LoadingComponent';
+import ModalContainer from '../common/Modals/ModalContainer';
 
 
 function App() {
@@ -34,10 +35,11 @@ function App() {
  
 
   if(!commonStore.appLoaded) return <LoadingComponent content='Loading App..'/>
-  
+
   return (
     < >
     <ToastContainer position='bottom-right' hideProgressBar/>
+    <ModalContainer/>
     <Route exact  path='/' component={HomePage}/>
     
     <Route
