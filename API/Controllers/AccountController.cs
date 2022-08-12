@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace API.Controllers
 {
@@ -35,12 +36,8 @@ namespace API.Controllers
 
             var result=await signInManager.CheckPasswordSignInAsync(user,loginDto.Password,false);
             if(result.Succeeded){
-                return new UserDto{
-                    DisplayName=user.DisplayName,
-                    Image=null,
-                    Token=tokenService.CreateToken(user),
-                    Username=user.UserName
-                };
+               
+                return CreateUserObject(user);
             }
             return Unauthorized();
         }
@@ -61,15 +58,29 @@ namespace API.Controllers
             var result=await userManager.CreateAsync(user,registerDto.Password);
             if(result.Succeeded)
             {
-                return new UserDto
+                 return CreateUserObject(user);
+            }
+            return BadRequest("Problem Registering User");
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<ActionResult<UserDto>> GetCurrentUser(){
+            var user=await userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+            return CreateUserObject(user);
+        }
+        
+
+        private UserDto CreateUserObject(AppUser user)
+        {
+            return new UserDto
                 {
                         DisplayName=user.DisplayName,
                         Image=null,
                         Token=tokenService.CreateToken(user),
                         Username=user.UserName
                 };
-            }
-            return BadRequest("Problem Registering User");
+
         }
+    
     }
 }
