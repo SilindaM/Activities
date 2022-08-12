@@ -5,6 +5,7 @@ import { history } from "../..";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { store } from "../stores/store";
 import { config } from "process";
+import { User, UserFormValues } from "../../Models/user";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -64,6 +65,11 @@ const requests={
     put:<T>(url:string,body:{})=>axios.put<T>(url,body).then(responseBody),
     delete:<T>(url:string)=>axios.delete<T>(url).then(responseBody),
 }
+const Account={
+    current:()=>requests.get<User>('/account'),
+    login:(user:UserFormValues)=>requests.post<User>('/account/login',user),
+    register:(user:UserFormValues)=>requests.post<User>('/account/register',user)
+}
 
 const Activities={
     list:()=>requests.get<Activity[]>('/activities'),
@@ -75,7 +81,8 @@ const Activities={
 }
 
 const agent={
-    Activities
+    Activities,
+    Account
 }
 
 export default agent;
