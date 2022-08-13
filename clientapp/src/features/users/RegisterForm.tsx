@@ -5,6 +5,7 @@ import { Button, Header, Label } from 'semantic-ui-react'
 import { useStore } from '../../app/stores/store'
 import * as Yup from 'yup'
 import MyTextinput from '../../app/common/form/MyTextinput'
+import ValidationErros from '../error/ValidationErros'
 
 
 
@@ -30,7 +31,11 @@ export default observer( function RegisterForm(){
                     <MyTextinput name='username' placeholder='Username' />
                     <MyTextinput name='email' placeholder='Email' />
                     <MyTextinput name='password' placeholder='Password' type='password'/>
-                   
+                    <ErrorMessage name='error'
+                        render={()=>
+                            <ValidationErros errors={errors.error}/>}
+                        
+                    />
                     <Button disabled={!isValid || !dirty || isSubmitting} loading={isSubmitting} positive content='Register' type='submit' fluid />
                 </Form>
 
