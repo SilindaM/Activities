@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Activities;
 using Application.Core;
+using Application.Interfaces;
+using Infrastucture.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,9 +18,6 @@ namespace API.Extensions
     {
         public static IServiceCollection  AddApplicationServices(this IServiceCollection services,IConfiguration configuration){
 
-             services.AddMediatR(typeof(List.Handler).Assembly); 
-            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
@@ -36,6 +35,10 @@ namespace API.Extensions
                     WithOrigins("http://localhost:3000");
                 });
             });
+            
+            services.AddMediatR(typeof(List.Handler).Assembly); 
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddScoped<IUserAccessor,UserAccessor>();
             return services;
 
         }
