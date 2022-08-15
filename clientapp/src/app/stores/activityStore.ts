@@ -3,6 +3,7 @@ import { Activity } from "../../Models/activity";
 import agent from "../api/agent";
 import { act } from "react-dom/test-utils";
 import {format} from 'date-fns'
+import { store } from "./store";
 
 export default  class ActivityStore{
     activityRegistry=new Map<string,Activity>();
@@ -71,6 +72,14 @@ export default  class ActivityStore{
       }
     }
     private setActivity=(activity:Activity)=>{
+        const user=store.userStore.user;
+        if(user){
+            activity.isGoing=activity.attendees!.some(
+                a=>a.username===user.username
+            )
+            activity.isHost=activity.hostUsername===user.username;
+            activity.host=activity.attendees?.find(x=>x.username===activity.hostUsername);
+        }
         activity.date=new Date(activity.date!)
         this.activityRegistry.set(activity.id,activity)
     }
