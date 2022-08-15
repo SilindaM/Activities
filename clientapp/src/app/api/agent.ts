@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 import { resolve } from "path";
-import { Activity } from "../../Models/activity";
+import { Activity, ActivityFormValues } from "../../Models/activity";
 import { history } from "../..";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { store } from "../stores/store";
@@ -50,7 +50,6 @@ axios.interceptors.response.use(async response=>{
                 }
                 break;
             case 401:
-            
                  toast.error('unauthorised');
                  break;
             case 404:
@@ -82,10 +81,10 @@ const Account={
 const Activities={
     list:()=>requests.get<Activity[]>('/activities'),
     details:(id:string)=>requests.get<Activity>('/activities/${id}'),
-    create:(activity:Activity)=>axios.post<void>('/activities',activity),
-    update:(activity:Activity)=>axios.put<void>(`/activities/${activity.id}`,activity),
-    delete:(id:string)=>axios.delete<void>(`/activities/${id}`)
-
+    create:(activity:ActivityFormValues)=>requests.post<void>('/activities',activity),
+    update:(activity:ActivityFormValues)=>requests.put<void>(`/activities/${activity.id}`,activity),
+    delete:(id:string)=>requests.delete<void>(`/activities/${id}`),
+    attend:(id:string)=>requests.post<void>(`/activities/${id}/attend`,{})
 }
 
 const agent={
