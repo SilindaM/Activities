@@ -13,6 +13,7 @@ using System.Security.Claims;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("[controller]")]
     public class AccountController : ControllerBase
