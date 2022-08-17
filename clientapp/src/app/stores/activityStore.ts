@@ -4,7 +4,7 @@ import agent from "../api/agent";
 import { act } from "react-dom/test-utils";
 import {format} from 'date-fns'
 import { store } from "./store";
-import { Profile } from "../../Models/Profile";
+import { Profile } from "../../Models/profile";
 
 export default  class ActivityStore{
     activityRegistry=new Map<string,Activity>();

@@ -6,6 +6,7 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { store } from "../stores/store";
 import { config } from "process";
 import { User, UserFormValues } from "../../Models/user";
+import { Photo, Profile } from "../../Models/profile";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -53,7 +54,7 @@ axios.interceptors.response.use(async response=>{
                  toast.error('unauthorised');
                  break;
             case 404:
-                 history.push('not found');
+                 history.push('notfound');
                  break;
             case 500:
                  store.commonStore.setServerError(data);
@@ -77,6 +78,18 @@ const Account={
     login:(user:UserFormValues)=>requests.post<User>('/account/login',user),
     register:(user:UserFormValues)=>requests.post<User>('/account/register',user)
 }
+const Profiles={
+    get:(username:string)=>requests.get<Profile>(`/Profile/${username}`),
+    uploadPhoto:(file:Blob)=>{
+        let formData=new FormData();
+        formData.append('File',file);
+        return axios.post<Photo>('photos',formData,{
+            headers:{'Content-type':'multipart/form-data'}
+        })
+    },
+    setMainPhoto:(id:string)=>requests.post(`/photos/${id}/setMain`,{}),
+    deletePhoto:(id:string)=>requests.delete(`/photos/${id}`),
+}
 
 const Activities={
     list:()=>requests.get<Activity[]>('/activities'),
@@ -89,7 +102,8 @@ const Activities={
 
 const agent={
     Activities,
-    Account
+    Account,
+    Profiles
 }
 
 export default agent;
