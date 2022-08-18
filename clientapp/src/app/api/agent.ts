@@ -89,6 +89,7 @@ const Profiles={
     },
     setMainPhoto:(id:string)=>requests.post(`/photos/${id}/setMain`,{}),
     deletePhoto:(id:string)=>requests.delete(`/photos/${id}`),
+    updateFollowing:(username:string)=>requests.post(`/follow/${username}`,{})
 }
 
 const Activities={
