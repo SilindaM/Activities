@@ -1,6 +1,6 @@
 import { th } from "date-fns/locale";
 import { makeAutoObservable, reaction, runInAction } from "mobx";
-import { Photo, Profile } from "../../Models/profile";
+import { Photo, Profile, UserActivity } from "../../Models/Profile";
 import agent from "../api/agent";
 import { store } from "./store";
 
@@ -12,6 +12,8 @@ export default class ProfileStore{
     loadingFollowings=false;
     followings:Profile[]=[];
     activeTab=0;
+    userActivities: UserActivity[] = [];
+    loadingActivities = false;
 
     constructor(){
         makeAutoObservable(this);
@@ -109,6 +111,22 @@ export default class ProfileStore{
             
         }
     }
+    updateProfile=async(profile:Partial<Profile>)=>{
+        this.loading=true;
+        try {
+            await agent.Profiles.updateProfile(profile);
+            runInAction(()=>{
+                if(profile.displayName && profile.displayName !==store.userStore.user?.displayName){
+                    store.userStore.setDisplayName(profile.displayName);
+                }
+                this.profile={...this.profile,...profile as Profile};
+                this.loading=false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(()=>this.loading=false);
+        }
+    }
     updateFollowing= async (username:string,following:boolean)=>{
         this.loading=true;
         try {
@@ -123,10 +141,10 @@ export default class ProfileStore{
                     
                     following?this.profile.followersCount++:this.profile.followersCount--;
                 }
-                this.followings.forEach(profile=>{
-                    if(profile.username===username){
-                        profile.following?profile.followersCount--:profile.followersCount++;
-                        profile.following=!profile.following;                    }
+                this.followings.forEach(Profile=>{
+                    if(Profile.username===username){
+                        Profile.following?Profile.followersCount--:Profile.followersCount++;
+                        Profile.following=!Profile.following;                    }
                 })
                 this.loading=false;
             })
@@ -147,6 +165,21 @@ export default class ProfileStore{
             console.log(error);
             runInAction(()=>{
                 this.loadingFollowings=false;
+            })
+        }
+    }
+    loadUserActivities = async (username: string, predicate?:string) =>{
+        this.loadingActivities = true;
+        try {
+            const activities = await agent.Profiles.listActivities(username, predicate!);
+            runInAction(() =>{
+                this.userActivities = activities;
+                this.loadingActivities = false;
+            })
+        } catch (error) {
+            console.log(error);
+            runInAction(() =>{
+                this.loadingActivities = false;
             })
         }
     }

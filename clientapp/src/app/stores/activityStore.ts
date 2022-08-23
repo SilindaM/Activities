@@ -4,8 +4,8 @@ import agent from "../api/agent";
 import { act } from "react-dom/test-utils";
 import {format} from 'date-fns'
 import { store } from "./store";
-import { Profile } from "../../Models/profile";
 import { Pagination, PagingParams } from "../../Models/pagination";
+import { Profile } from "../../Models/Profile";
 
 export default  class ActivityStore{
     activityRegistry=new Map<string,Activity>();

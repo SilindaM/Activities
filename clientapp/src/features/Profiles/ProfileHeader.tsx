@@ -1,7 +1,8 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { Button, Divider, Grid, Header, Item, Reveal, Segment, Statistic } from "semantic-ui-react";
-import { Profile } from "../../Models/profile";
+import { Profile } from "../../Models/Profile";
+
 import FollowButon from "./FollowButon";
 
 

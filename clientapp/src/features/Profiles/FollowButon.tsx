@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { SyntheticEvent } from 'react'
 import { Reveal, Button } from 'semantic-ui-react'
 import { useStore } from '../../app/stores/store'
-import { Profile } from '../../Models/profile'
+import { Profile } from '../../Models/Profile'
 interface Props{
     profile:Profile
 }

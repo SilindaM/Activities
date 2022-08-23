@@ -6,8 +6,8 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { store } from "../stores/store";
 import { config } from "process";
 import { User, UserFormValues } from "../../Models/user";
-import { Photo, Profile } from "../../Models/profile";
 import { PaginatedResult } from "../../Models/pagination";
+import { Photo, Profile, UserActivity } from "../../Models/Profile";
 
 const sleep = (delay: number) => {
     return new Promise((resolve) => {
@@ -85,7 +85,7 @@ const Account={
     register:(user:UserFormValues)=>requests.post<User>('/account/register',user)
 }
 const Profiles={
-    get:(username:string)=>requests.get<Profile>(`/Profile/${username}`),
+    get:(username:string)=>requests.get<Profile>(`/profiles/${username}`),
     uploadPhoto:(file:Blob)=>{
         let formData=new FormData();
         formData.append('File',file);
@@ -95,9 +95,12 @@ const Profiles={
     },
     setMainPhoto:(id:string)=>requests.post(`/photos/${id}/setMain`,{}),
     deletePhoto:(id:string)=>requests.delete(`/photos/${id}`),
+    updateProfile: (profile: Partial<Profile>) => requests.put(`profiles`, profile),
     updateFollowing:(username:string)=>requests.post(`/follow/${username}`,{}),
     listFollowings:(username:string,predicate:string)=>
-    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
+    requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+    listActivities: (username: string, predicate: string) =>
+        requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 
 const Activities={

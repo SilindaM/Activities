@@ -1,30 +1,28 @@
-import { isValid } from 'date-fns';
-import { Formik ,Form, Field, FieldProps} from 'formik';
+import { Formik,Form, Field, FieldProps } from 'formik';
 import { observer } from 'mobx-react-lite'
 import React, { useEffect } from 'react'
-import { act } from 'react-dom/test-utils';
 import { Link } from 'react-router-dom';
-import {Segment, Header, Comment, Button, Loader} from 'semantic-ui-react'
-import MyTextArea from '../../../app/common/form/MyTextArea';
+import {Segment, Header, Comment, Loader} from 'semantic-ui-react'
 import { useStore } from '../../../app/stores/store';
-import   * as Yup from 'yup'
+import * as Yup from 'yup';
+import { formatDistanceToNow } from 'date-fns/esm';
 
 interface Props{
-    activityId:string;
-
+    activityId: string;
 }
-export default observer(function ActivityDetailedChat({activityId}:Props) {
-    const {commentStore}=useStore();
 
-    useEffect(()=>{
-        if(activityId){
+export default observer(function ActivityDetailedChat({activityId}: Props) {
+    const {commentStore} = useStore();
+
+    useEffect(() =>{
+        if (activityId){
             commentStore.createHubConnection(activityId);
         }
-        return ()=>{
+        return () =>{
             commentStore.clearComments();
         }
-    },[commentStore,activityId])
-    
+    },[commentStore, activityId]);
+
     return (
         <>
             <Segment
@@ -37,16 +35,13 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                 <Header>Chat about this event</Header>
             </Segment>
             <Segment attached clearing>
-                
             <Formik
                         onSubmit={(values,{resetForm}) =>commentStore.addComment(values).then(() => resetForm())}
                         initialValues = {{body: ''}}
-                        validationSchema={
-                            Yup.object({
-                                body:Yup.string().required()
-                            })
-                        }
-                     >
+                        validationSchema={Yup.object({
+                            body:Yup.string().required()
+                        })}
+                    >
                         {({isSubmitting, isValid,handleSubmit}) =>(
                             <Form className='ui form'>
                                 <Field name='body'>
@@ -73,28 +68,25 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                             </Form>
                         )}
                     </Formik>
-            <Comment.Group>
+                    <Comment.Group>
                     {commentStore.comments.map(comment => (
                         <Comment key={comment.id}>
                         <Comment.Avatar src={comment.image || '/assets/user.png'}/>
                         <Comment.Content>
-                                <Comment.Author as={Link} to={`/profiles/${comment.username}`}>
-                                     {comment.displayName} 
+                                <Comment.Author as={Link} to={`/Profile/${comment.username}`}>
+                                     {comment.displayName}
                                 </Comment.Author>
                             <Comment.Metadata>
-                                 <div>{formatDistanceToNow(comment.createdAt)} ago</div> 
+                                <div>(comment.createdAt) ago</div>
                             </Comment.Metadata>
                             <Comment.Text style={{whiteSpace:'pre-wrap'}} >{comment.body}</Comment.Text>
                         </Comment.Content>
                         </Comment>
                     ))}
+                   
                 </Comment.Group>
             </Segment>
         </>
 
     )
 })
-function formatDistanceToNow(createdAt: any): React.ReactNode {
-    throw new Error('Function not implemented.');
-}
-
