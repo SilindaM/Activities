@@ -1,4 +1,5 @@
-Reactivities
+# Reactivities
+
 Reactivities is a real time social network built with React and ASP.NET(C#).
 
 it contains a user authentication system, activity management including real time chat, user profile management including following/followers, photo cropper and upload.
