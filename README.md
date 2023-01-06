@@ -1,8 +1,7 @@
-# Reactivities
-A social network application built using ASP.NET Core, React (with Typescript) and Mobx following Clean Architecture and CQRS + Mediator pattern.
+Reactivities
+Reactivities is a real time social network built with React and ASP.NET(C#).
 
-This is the final project for [Complete guide to building an app with .Net Core and React](https://www.udemy.com/course/complete-guide-to-building-an-app-with-net-core-and-react/) at Udemy.
-
+it contains a user authentication system, activity management including real time chat, user profile management including following/followers, photo cropper and upload.
 <!-- Table of Contents -->
 # :notebook_with_decorative_cover: Table of Contents
 
