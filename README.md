@@ -1,7 +1,9 @@
 <div align="center">
 
-  <img src="assets/logo.png" alt="logo" width="200" height="auto" />
-  <h1>Awesome Readme Template</h1>
+  <h1>Reactivities</h1>
+  <h2>Reactivities is a real time social network built with React and ASP.NET(C#).
+
+it contains a user authentication system, activity management including real time chat, user profile management including following/followers, photo cropper and upload.</h2>
   
 </div>
 
