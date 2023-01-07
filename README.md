@@ -10,7 +10,7 @@ Not authenticated users will see a login and sign up buttons, authenticated will
 <p><img src="assets/landing.png" width="300" /></p>
 
 ### Signup/Login
-<p><img src="assets/signup.png" width="300" /></p>
+<p><img src="assets/signup.png" width="600" height="500" /></p>
 
 <p><img src="assets/login.png" width="300" /></p>
 
